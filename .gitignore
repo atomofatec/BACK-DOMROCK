@@ -1,0 +1,61 @@
+# Ambientes virtuais
+venv/
+env/
+.venv/
+.env/
+
+# Bytecode Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de log e dumps
+*.log
+*.dat
+*.sqlite
+
+# Configurações do Jupyter Notebook
+.ipynb_checkpoints/
+
+# Configurações específicas do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de pacotes e distribuição
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info/
+
+# Bibliotecas instaladas via pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Arquivos gerados por IDEs
+.vscode/
+.idea/
+
+# Testes e cobertura
+htmlcov/
+.tox/
+.coverage
+.cache
+.pytest_cache/
+
+# Modelos grandes ou cache do transformers/datasets
+transformers_cache/
+datasets_cache/
+hf_home/
+
+# Caches de arquivos grandes
+*.h5
+*.ckpt
+
+# Arquivos temporários de deploy
+*.envrc
+.env.local
+.env.*.local

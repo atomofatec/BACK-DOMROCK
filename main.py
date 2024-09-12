@@ -1,31 +1,30 @@
-import preprocess
+from preprocess import load_and_preprocess_data
 import embeddings
-import faiss_search
-import text_generation
+from faiss_search import criar_faiss_index
+from faiss_search import buscar_por_produto
+from text_generation import gerar_resposta_por_produto
 
-# criar ambiente virtual em python (opcional)
-# instalar os pacotes com o comando abaixo (obrigatório):
-# pip install -r requirements.txt
+# Carregar e pré-processar os dados
+df = load_and_preprocess_data('chat_data.csv')
 
-# carregar e pré-processar os dados
-df = preprocess.load_and_preprocess_data('chat_data.csv')
-
-# gerar embeddings
+# Definir as colunas de texto para geração de embeddings
 text_columns = ['product_name_processado', 'product_brand_processado', 'site_category_lv1_processado', 
                 'site_category_lv2_processado', 'review_title_processado', 'recommend_to_a_friend_processado', 
                 'review_text_processado', 'reviewer_gender_processado', 'reviewer_state_processado']
+
+# Gerar embeddings
 embeddings_dict = embeddings.gerar_embeddings(df, text_columns)
 
-# criar índice faiss para os embeddings
-index = faiss_search.criar_faiss_index(embeddings_dict['review_text_processado'])
+# Criar o índice Faiss para os embeddings da coluna review_text_processado
+index = criar_faiss_index(embeddings_dict['review_text_processado'])
 
-# consultar por comentário similar (o comentário está sendo passado diretamente no código, criar interface no prompt para interação)
-consulta = "Produto bom."
-resultados = faiss_search.buscar_no_faiss(df, index, consulta, embeddings.model, k=1)
+# Consultar por todas as avaliações de um produto específico
+consulta_produto = "Copo Acrílico Com Canudo 500ml Rocie"
+resultados = buscar_por_produto(df, index, consulta_produto, embeddings.model, k=10)
 
-# gerar resposta com gpt2
+# Gerar a resposta agregada com base nas notas encontradas
 if resultados:
-    comentario_proximo = resultados[0]['comentário']
-    mensagem_gerada = text_generation.gerar_resposta(comentario_proximo)
-    print(f"Comentário mais similar: {comentario_proximo}")
-    print(f"Mensagem gerada: {mensagem_gerada}")
+    resposta_gerada = gerar_resposta_por_produto(resultados)
+    print(f"Resposta gerada: {resposta_gerada}")
+else:
+    print("Produto não encontrado ou sem avaliações.")

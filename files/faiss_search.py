@@ -1,15 +1,16 @@
 import faiss
 import numpy as np
-from preprocess import preprocess_text
+from .preprocess import preprocess_text
 
-# Função que cria o índice Faiss para os embeddings
+# define a dimensão dos vetores, cria um índice faiss com uma distância de busca definida e adiciona os embeddings processados ao índice
 def criar_faiss_index(embeddings):
     dimension = embeddings.shape[1]
     index = faiss.IndexFlatL2(dimension)
     index.add(np.array(embeddings))
     return index
 
-# Função que busca avaliações similares por nome do produto
+# pré-processa e gera um embedding para a consulta para comparar com os embeddings já salvos e buscar por valores semelhantes. adiciona o resultado no final da lista
+# possivelmente vai precisar de mudanças para retornos mais precisos
 def buscar_por_produto(df, index, produto, model, k=10):
     produto_processado = preprocess_text(produto)  # Pré-processa o nome do produto
     produto_embedding = model.encode([produto_processado])  # Gera embedding

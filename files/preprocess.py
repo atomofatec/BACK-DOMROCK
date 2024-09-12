@@ -4,6 +4,7 @@ import spacy
 # instalar o modelo com o comando abaixo
 # python -m spacy download pt_core_news_sm
 
+# Carrega o modelo de linguagem do spaCy
 nlp = spacy.load('pt_core_news_sm')
 
 # função para processar o texto e retornar normalizado
@@ -19,8 +20,9 @@ def preprocess_text(text):
 # se possível, substituir pela API disponibilizada pelo cliente (mais fácil q csv)
 def load_and_preprocess_data(file_path):
     df = pd.read_csv(file_path)
-    text_columns = ['product_name', 'product_brand', 'site_category_lv1', 'site_category_lv2', 'review_title', 
-                    'recommend_to_a_friend', 'review_text', 'reviewer_gender', 'reviewer_state']
+    text_columns = ['product_name', 'product_brand', 'site_category_lv1', 'site_category_lv2', 
+                    'review_title', 'recommend_to_a_friend', 'review_text', 'reviewer_gender', 
+                    'reviewer_state']
     
     for col in text_columns:
         df[f'{col}_processado'] = df[col].apply(preprocess_text)

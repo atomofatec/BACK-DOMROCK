@@ -1,16 +1,15 @@
 import faiss
 import numpy as np
-from preprocess import preprocess_text
+from preprocess import preprocess_text  # Presumo que você tenha esse arquivo
 
-# define a dimensão dos vetores, cria um índice faiss com uma distância de busca definida e adiciona os embeddings processados ao índice
+# Define a dimensão dos vetores, cria um índice FAISS e adiciona os embeddings processados ao índice
 def criar_faiss_index(embeddings):
     dimension = embeddings.shape[1]
     index = faiss.IndexFlatL2(dimension)
     index.add(np.array(embeddings))
     return index
 
-# pré-processa e gera um embedding para a consulta para comparar com os embeddings já salvos e buscar por valores semelhantes. adiciona o resultado no final da lista
-# possivelmente vai precisar de mudanças para retornos mais precisos
+# Função para buscar no FAISS
 def buscar_no_faiss(df, index, consulta, model, k=1):
     consulta_processada = preprocess_text(consulta)
     consulta_embedding = model.encode([consulta_processada])

@@ -9,15 +9,9 @@ generator = pipeline('text-generation', model='gpt2')
 def gerar_resposta_por_produto(resultados):
     if not resultados:
         return "Nenhuma avaliação encontrada para o produto."
-    
-    nome_produto = resultados[0]['produto']  
-    
-    notas = [str(resultado['nota']) for resultado in resultados]
-    
-    notas_texto = ", ".join(notas)
-    
-    prompt = f"O produto {nome_produto} recebeu as seguintes notas de diferentes usuários: {notas_texto}. Gere um resumo dessas avaliações."
-    
-    resposta = generator(prompt, max_length=100, num_return_sequences=1)
 
-    return resposta[0]['generated_text']
+    resposta = f"Produto: {resultados['produto']}\n"
+    resposta += f"Nota: {resultados['nota']}\n"
+    resposta += f"Comentário: {resultados['comentário']}\n"
+    
+    return resposta

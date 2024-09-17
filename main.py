@@ -21,24 +21,21 @@ def main():
     # Criar índice faiss para os embeddings
     index = criar_faiss_index(embeddings_dict['review_text_processado'])
 
-    print("Bem-vindo ao chatbot! Digite 'sair' para encerrar.")
+    print("Bem-vindo ao Chat ATM! Digite 'sair' para encerrar.")
 
     while True:
-        consulta_produto = input("Qual a sua dúvida? ")
+        consulta_produto = input("Qual produto você deseja receber a avaliação? ")
 
         if consulta_produto.lower() == 'sair':
-            print("Encerrando o chatbot. Até mais!")
+            print("Encerrando o Chat ATM. Até mais!")
             break
 
         # Consultar por comentário similar
-        resultados = buscar_por_produto(df, index, consulta_produto, model, k=10)
+        resultados = buscar_por_produto(df, index, consulta_produto, model)
 
         # Gerar resposta com GPT-2
-        if resultados:
-            resposta_gerada = gerar_resposta_por_produto(resultados)
-            print(f"Resposta gerada: {resposta_gerada}")
-        else:
-            print("Produto não encontrado ou sem avaliações.")
+        resposta_gerada = gerar_resposta_por_produto(resultados)
+        print(f"Resposta gerada: {resposta_gerada}")
 
 if __name__ == "__main__":
     main()

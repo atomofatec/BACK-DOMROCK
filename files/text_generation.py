@@ -21,6 +21,10 @@ def gerar_resposta_por_produto(resultados):
         "Por favor, gere um resumo claro e conciso dessas avaliações, destacando os pontos positivos e negativos."
     )
     
-    resposta = generator(prompt, max_new_tokens=100, num_return_sequences=1)
+    # Calcule o comprimento do prompt
+    input_length = len(generator.tokenizer(prompt)['input_ids'])
+    
+    # Ajuste o max_new_tokens para garantir que a geração de texto possa ocorrer sem problemas
+    resposta = generator(prompt, max_new_tokens=200, num_return_sequences=1)
 
     return resposta[0]['generated_text']

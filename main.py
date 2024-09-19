@@ -70,7 +70,7 @@ if resultados:
     print(f"Produto: {produto_proximo}")
 
 # Carregar e pré-processar os dados do chat_data.csv
-df_chat_data = load_and_preprocess_data(r'venv\data\chat_data.csv')
+df_chat_data = load_and_preprocess_data(r'data\chat_data.csv')
 
 # Definir as colunas de texto para geração de embeddings
 text_columns_chat = ['product_name_processado', 'product_brand_processado', 'site_category_lv1_processado', 

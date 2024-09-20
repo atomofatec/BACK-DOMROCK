@@ -23,6 +23,13 @@ def buscar_por_produto(df, index, produto, model, k=10):
             resultados.append({
                 'produto': resultado['product_name'],
                 'nota': resultado['overall_rating'],
-                'comentário': resultado['review_text']
+                'comentário': resultado['review_text'],
+                'data_submissão': resultado['submission_date'],
+                'título_revisão': resultado['review_title'],
+                'recomenda_para_amigo': resultado['recommend_to_a_friend'],
+
+                'site_category_lv1': resultado['site_category_lv1'],
+                'site_category_lv2': resultado['site_category_lv2'],
+
             })
     return resultados

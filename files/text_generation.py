@@ -1,30 +1,17 @@
 from transformers import pipeline
 
-# Modelo de geração de texto pré-treinado (GPT-2)
+# modelo de geração de texto pré-treinado (gpt2)
 generator = pipeline('text-generation', model='gpt2')
 
+# função que gera o texto com base no comentário fornecido e retorna as notas relacionadas a ele
+# max_length define o tamanho da mensagem e num_return_sequences define quantidade de respostas
+# necessário aprimoramento para respostas coerentes
 def gerar_resposta_por_produto(resultados):
     if not resultados:
         return "Nenhuma avaliação encontrada para o produto."
-    
-    nome_produto = resultados[0]['produto']
-    
-    notas = [str(resultado['nota']) for resultado in resultados]
-    comentarios = [resultado['comentário'] for resultado in resultados]
-    
-    notas_texto = ", ".join(notas)
-    comentarios_texto = " ".join(comentarios)
-    
-    prompt = (
-        f"O produto '{nome_produto}' recebeu as seguintes notas de diferentes usuários: {notas_texto}. "
-        f"Aqui estão alguns comentários dos usuários: {comentarios_texto}. "
-        "Por favor, gere um resumo claro e conciso dessas avaliações, destacando os pontos positivos e negativos."
-    )
-    
-    # Calcule o comprimento do prompt
-    input_length = len(generator.tokenizer(prompt)['input_ids'])
-    
-    # Ajuste o max_new_tokens para garantir que a geração de texto possa ocorrer sem problemas
-    resposta = generator(prompt, max_new_tokens=200, num_return_sequences=1)
 
-    return resposta[0]['generated_text']
+    resposta = f"Produto: {resultados['produto']}\n"
+    resposta += f"Nota: {resultados['nota']}\n"
+    resposta += f"Comentário: {resultados['comentário']}\n"
+    
+    return resposta

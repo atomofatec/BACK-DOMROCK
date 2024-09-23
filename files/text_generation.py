@@ -1,6 +1,6 @@
 from transformers import pipeline
 
-# Modelo de geração de texto pré-treinado (gpt2)
+# Modelo de geração de texto pré-treinado (GPT-2)
 generator = pipeline('text-generation', model='gpt2')
 
 def gerar_resposta_por_produto(resultados):
@@ -23,17 +23,18 @@ def gerar_resposta_por_produto(resultados):
     # Mantendo a lógica de processamento dos resultados
     for resultado in resultados:
         if resultado['comentário']:
-            comentario = resultado['comentário']
-            data_submissao = resultado.get('data_submissão', 'Data não disponível')
-            titulo_revisao = resultado.get('título_revisão', 'Sem título')
-            nota = resultado.get('nota', 'Nota não disponível')
-            categoria1 = resultado.get('site_category_lv1', 'Categoria 1 não disponível')
-            categoria2 = resultado.get('site_category_lv2', 'Categoria 2 não disponível')
+            # Garantindo que os valores sejam strings
+            comentario = str(resultado['comentário'])
+            data_submissao = str(resultado.get('data_submissão', 'Data não disponível'))
+            titulo_revisao = str(resultado.get('título_revisão', 'Sem título'))
+            nota = str(resultado.get('nota', 'Nota não disponível'))
+            categoria1 = str(resultado.get('site_category_lv1', 'Categoria 1 não disponível'))
+            categoria2 = str(resultado.get('site_category_lv2', 'Categoria 2 não disponível'))
 
-            recomenda_para_amigo = resultado.get('recomenda_para_amigo', 'Sem recomendação')
+            recomenda_para_amigo = str(resultado.get('recomenda_para_amigo', 'Sem recomendação'))
             
             # Verificar se a nota ou recomendação indicam um comentário positivo
-            if nota >= 4 or 'Yes' in recomenda_para_amigo:
+            if resultado.get('nota', 0) >= 4 or 'Yes' in recomenda_para_amigo:
                 total_positivos += 1
                 aspectos_positivos.append(comentario)  # Armazena aspectos positivos
             else:
@@ -82,6 +83,9 @@ def gerar_resposta_por_produto(resultados):
 
     print("Prompt gerado:", prompt)  # Verificando o prompt
     
+    # Gera a resposta final baseada no prompt
+    resposta = generator(prompt, max_length=900, num_return_sequences=1, temperature=0.9, top_k=50, truncation=True)
+     
     # MAX_LENGTH: Define o comprimento máximo da resposta gerada
     # NUM_RETURN_SEQUENCES: Gera uma única sequência de texto como resposta
     # TEMPERATURE: Controla a criatividade da resposta; quanto maior o valor, mais aleatória e variada será a geração.
@@ -89,13 +93,8 @@ def gerar_resposta_por_produto(resultados):
     # TRUNCATION (True): Garante que o prompt não exceda o comprimento máximo permitido pelo modelo; o texto será cortado para se ajustar ao limite se necessário.  
     # PROMPT: Texto de entrada que o modelo usará para gerar a resposta
 
-    # Gera a resposta final baseada no prompt
-    resposta = generator(prompt, max_length=900, num_return_sequences=1, temperature=0.9, top_k=50, truncation=True)
-    
     return resposta[0]['generated_text']
 
-    # A função lê os dados de outra fonte e mantém a lógica dinâmica
-
     
+  
     
-   

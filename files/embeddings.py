@@ -1,10 +1,10 @@
 from sentence_transformers import SentenceTransformer
 import pandas as pd
 
-# modelo pré-treinado de embeddings de sentenças
+# Modelo pré-treinado de embeddings de sentenças
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
-# função para gerar e armazenar embeddings para cada coluna de texto
+# Função para gerar e armazenar embeddings para cada coluna de texto
 def gerar_embeddings(df, text_columns):
     embeddings_dict = {}
     

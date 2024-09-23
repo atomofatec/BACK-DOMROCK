@@ -6,11 +6,12 @@ generator = pipeline('text-generation', model='gpt2')
 def gerar_resposta_por_produto(resultados):
     if not resultados:
         return "Nenhuma avaliação encontrada para o produto."
-    
+
     nome_produto = resultados[0]['produto']
     
+    # Garantindo que as notas e comentários sejam strings
     notas = [str(resultado['nota']) for resultado in resultados]
-    comentarios = [resultado['comentário'] for resultado in resultados]
+    comentarios = [str(resultado['comentário']) for resultado in resultados]  # Conversão para string
     
     notas_texto = ", ".join(notas)
     comentarios_texto = " ".join(comentarios)
@@ -21,10 +22,6 @@ def gerar_resposta_por_produto(resultados):
         "Por favor, gere um resumo claro e conciso dessas avaliações, destacando os pontos positivos e negativos."
     )
     
-    # Calcule o comprimento do prompt
-    input_length = len(generator.tokenizer(prompt)['input_ids'])
-    
-    # Ajuste o max_new_tokens para garantir que a geração de texto possa ocorrer sem problemas
     resposta = generator(prompt, max_new_tokens=200, num_return_sequences=1)
-
-    return resposta[0]['generated_text']
+    
+    return resposta[0]['generated_text']  # Ajustado para retornar o texto gerado

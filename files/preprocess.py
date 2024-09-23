@@ -1,14 +1,13 @@
 import pandas as pd
 import spacy
 
-# instalar o modelo com o comando abaixo
+# Instalar o modelo com o comando abaixo
 # python -m spacy download pt_core_news_sm
 
-# Carrega o modelo de linguagem do spaCy
+# Carregar o modelo de linguagem do spaCy
 nlp = spacy.load('pt_core_news_sm')
 
-# função para processar o texto e retornar normalizado
-# provavelmente vai precisar de alterações nessa função para respostas mais naturais e coerentes
+# Função para processar o texto e retornar normalizado
 def preprocess_text(text):
     if pd.isna(text):
         return ''
@@ -16,8 +15,7 @@ def preprocess_text(text):
     tokens = [token.lemma_ for token in doc if not token.is_stop and not token.is_punct]
     return " ".join(tokens)
 
-# função que carrega o csv e pré-processa os dados
-# se possível, substituir pela API disponibilizada pelo cliente (mais fácil q csv)
+# Função que carrega o csv e pré-processa os dados
 def load_and_preprocess_data(file_path):
     df = pd.read_csv(file_path)
     text_columns = ['product_name', 'product_brand', 'site_category_lv1', 'site_category_lv2', 

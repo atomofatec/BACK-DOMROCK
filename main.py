@@ -1,14 +1,21 @@
 import re
 import pandas as pd
 from datasets import load_dataset
-from files.embeddings import gerar_embeddings
-from files.faiss_search import criar_faiss_index, buscar_por_produto
+from files.embeddings import gerar_embeddings 
+from files.faiss_search import criar_faiss_index, buscar_no_faiss, buscar_por_produto
 from files.preprocess import load_and_preprocess_data
 from files.text_generation import gerar_resposta_por_produto
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from prettytable import PrettyTable
 
+# Inicializa o modelo de embeddings
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+# Modelo de geração de texto pré-treinado (GPT-2)
+generator = pipeline('text-generation', model='gpt2')
+
+# Função para limpar o texto das avaliações
 def clean_text(text):
     text = re.sub(r'[^\w\s]', '', text)
     return text.lower()
@@ -128,6 +135,10 @@ def main():
             print(f"Resposta gerada: {resposta_gerada}")
         else:
             print("Produto não encontrado ou sem avaliações.")
+
+        # Arredondar o tempo de busca para o chat
+        tempo_arredondado_chat = round(tempo_busca_chat, 2)
+        print(f"Tempo de busca para o chat: {tempo_arredondado_chat:.2f} segundos")
 
 if __name__ == "__main__":
     main()

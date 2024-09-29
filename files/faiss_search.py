@@ -14,19 +14,11 @@ def buscar_por_produto(df, index, consulta, model, k=10):
     distances, indices = index.search(np.array(consulta_embedding), k=k)  # Busca no índice
 
     resultados = []
-    
     for idx in indices[0]:  # Coleta todas as avaliações correspondentes
         resultado = df.iloc[idx]
-
         resultados.append({
             'produto': resultado['product_name'],
             'nota': resultado['overall_rating'],
-            'comentário': resultado['review_text'],
-            'data_submissão': resultado.get('submission_date', 'Data não disponível'),
-            'título_revisão': resultado.get('review_title', 'Sem título'),
-            'recomenda_para_amigo': resultado.get('recommend_to_a_friend', 'Sem recomendação'),
-            'site_category_lv1': resultado.get('site_category_lv1', 'Categoria 1 não disponível'),
-            'site_category_lv2': resultado.get('site_category_lv2', 'Categoria 2 não disponível')
+            'comentário': resultado['review_text']
         })
-    
     return resultados

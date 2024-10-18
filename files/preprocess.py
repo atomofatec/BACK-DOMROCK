@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import spacy
 from nltk.corpus import stopwords
+from unidecode import unidecode
 
 # carrega o arquivo com os dados
 df = pd.read_csv(r'data\chat_data.csv')
@@ -26,6 +27,7 @@ def normalize_text(text):
     text = re.sub(r'[^\w\s]', '', text)  # remove as pontuações
     text = re.sub(r'\d+', '', text)  # remove os números
     text = text.lower()  # transforma tudo em minúsculo
+    text = unidecode(text)  # remove acentos
     return text
 
 # função de lematização e remoção de stop words (testar stemização e outras estratégias)
@@ -39,9 +41,9 @@ def divide_text_in_topics(text):
 
 
 # aplicar as funções de limpeza e normalização na coluna 'review_text'
-df['review_text'] = df['review_text'].apply(normalize_text)  # normalização
 df['review_text'] = df['review_text'].apply(
     lemmatize_and_remove_stopwords)  # lematização e remoção de stop words
+df['review_text'] = df['review_text'].apply(normalize_text)  # normalização
 df['review_text'] = df['review_text'].apply(
     lambda x: divide_text_in_topics(x))  # divisão em sentenças
 

@@ -48,12 +48,14 @@ def gerar_insights(df):
         # Criar tabelas para comentários positivos e negativos
         tabela_positivos = PrettyTable()
         tabela_positivos.field_names = ["Comentário Positivo", "Nota"]
-        for _, comentario in comentarios_positivos.iterrows():
+        if not comentarios_positivos.empty:
+            comentario = comentarios_positivos.iloc[0]  # Seleciona apenas o primeiro comentário positivo
             tabela_positivos.add_row([comentario['review_text'], comentario['overall_rating']])
 
         tabela_negativos = PrettyTable()
         tabela_negativos.field_names = ["Comentário Negativo", "Nota"]
-        for _, comentario in comentarios_negativos.iterrows():
+        if not comentarios_negativos.empty:
+            comentario = comentarios_negativos.iloc[0]  # Seleciona apenas o primeiro comentário negativo
             tabela_negativos.add_row([comentario['review_text'], comentario['overall_rating']])
 
         insights.append({
@@ -67,7 +69,7 @@ def gerar_insights(df):
             'Tabela Negativos': tabela_negativos
         })
 
-    # Exibir as tabelas geradas
+    # Exibir as tabelas geradas com limite de uma linha
     for insight in insights:
         print(f"\nCategoria: {insight['Categoria']}, Produto: {insight['Produto']}, "
               f"Média de Avaliação: {insight['Média de Avaliação']}, "
@@ -76,11 +78,11 @@ def gerar_insights(df):
         print(f"Total de Avaliações Positivas: {insight['Total Avaliações Positivas']}")
         print(f"Total de Avaliações Negativas: {insight['Total Avaliações Negativas']}")
 
-        print("\nComentários Positivos:")
-        print(insight['Tabela Positivos'])
+        print("\nComentário Positivo:")
+        print(insight['Tabela Positivos'].get_string(start=0, end=1))
 
-        print("\nComentários Negativos:")
-        print(insight['Tabela Negativos'])
+        print("\nComentário Negativo:")
+        print(insight['Tabela Negativos'].get_string(start=0, end=1))
 
     return insights, total_positivos, total_negativos
 

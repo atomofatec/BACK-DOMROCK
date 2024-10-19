@@ -1,4 +1,4 @@
 from .embeddings import gerar_embeddings
-from .faiss_search import criar_faiss_index, buscar_por_produto
+from .search_chromadb import generate_embedding, search_similar_documents
 from .preprocess import preprocess_text, load_and_preprocess_data
 from .text_generation import gerar_resposta_por_produto

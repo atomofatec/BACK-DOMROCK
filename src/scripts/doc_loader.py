@@ -5,7 +5,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from .preprocess import normalize_text, remove_stopwords
 
 # define as colunas do csv que serão usadas
-useful_data = ['product_name', 'product_brand', 'site_category_lv1', 'site_category_lv2', 'overall_rating', 'review_text']
+useful_data = ['product_name', 'product_brand', 'site_category_lv1', 'site_category_lv2', 'overall_rating', 'review_text', 'reviewer_gender']
 
 # carrega o csv
 def load_data(file_path):

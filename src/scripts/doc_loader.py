@@ -2,10 +2,10 @@ import os
 import pandas as pd
 from langchain_community.document_loaders import CSVLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from .preprocess import normalize_text, remove_stopwords
+from .preprocess import normalize_text, remove_stopwords, format_birth_year
 
 # define as colunas do csv que serão usadas
-useful_data = ['product_name', 'product_brand', 'site_category_lv1', 'site_category_lv2', 'overall_rating', 'review_text', 'reviewer_gender', 'submission_date']
+useful_data = ['product_name', 'product_brand', 'site_category_lv1', 'site_category_lv2', 'overall_rating', 'review_text', 'reviewer_gender', 'submission_date', 'reviewer_birth_year']
 
 # carrega o csv
 def load_data(file_path):
@@ -17,8 +17,12 @@ def load_data(file_path):
 
     # limpa e normaliza o texto
     for column in useful_data:
-        df_reduced[column] = df_reduced[column].apply(lambda x: normalize_text(str(x)))
-        df_reduced[column] = df_reduced[column].apply(lambda x: remove_stopwords(str(x)))
+        if column != 'reviewer_birth_year':  # Não normaliza a coluna do ano
+            df_reduced[column] = df_reduced[column].apply(lambda x: normalize_text(str(x)))
+            df_reduced[column] = df_reduced[column].apply(lambda x: remove_stopwords(str(x)))
+        else:
+            # Aplica a formatação no ano de nascimento
+            df_reduced[column] = df_reduced[column].apply(lambda x: format_birth_year(x))
 
     # define o nome e o caminho do arquivo de saída
     result_file_name = 'data_processed.csv'  # nome do arquivo de saída

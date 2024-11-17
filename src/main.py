@@ -56,7 +56,7 @@ def handle_query(question):
     # define a cadeia de execução com as informações de contexto e pergunta
     rag = (
         RunnablePassthrough()  # garante que o dicionário seja passado corretamente
-        | (prompt + "\n\nComo informação adicional, responda em português.\n\nNão peça desculpas pelo erro.")
+        | (prompt + "\n\nComo informação adicional, responda em português.\n\nNão peça desculpas pelo erro.\n\nEstamos no ano de 2024.\n\nQuando perguntado sobre gênero ou sexo, consultar a coluna reviewer_gender.\n\nQuando perguntado sobre desempenho ao longo do tempo ou em relação ao tempo, consultar a coluna submission_date.\n\nQuando perguntado sobre idade, ano de nascimento ou faixa etária, consultar a coluna reviewer_birth_year.\n\nIdentifique a coluna submission_date como a data em que o usuário publicou a review, e a coluna reviewer_birth_year como o ano de nascimento do usuário, não confunda as duas.")
         | llm
         | StrOutputParser()
     )

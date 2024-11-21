@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 from unidecode import unidecode
 from nltk.corpus import stopwords
 
@@ -21,3 +22,9 @@ def normalize_text(text):
 
 def remove_stopwords(text):
     return ' '.join([word for word in text.split() if word not in stopwords_list]) # remove as palavras do texto que estiverem na lista de stopwords
+
+def format_birth_year(year):
+    """Formata o ano de nascimento, removendo a parte decimal e lidando com NaN."""
+    if pd.isna(year):  # Verifica se é NaN
+        return None
+    return str(int(float(year))) if year else None

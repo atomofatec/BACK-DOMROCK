@@ -16,7 +16,7 @@ nltk.download('stopwords')  # baixa as stopwords
 nlp = spacy.load('pt_core_news_sm')  # baixa o modelo nlp em pt-br do spacy 
 
 # carrega e processa o .csv
-file_path = load_data('data/chat_data.csv')  # caminho do .csv inicial (sem tratamento)
+file_path = load_data(r'data/chat_data.csv')  # caminho do .csv inicial (sem tratamento)
 
 # carrega e faz o chunking dos documentos
 splits = load_and_chunk(file_path)
@@ -64,16 +64,17 @@ def handle_query(question):
     # executa a cadeia rag e retorna a resposta
     return rag.invoke(input_data)
 
-# loop para fazer perguntas
-while True:
-    # lê a pergunta do terminal
-    pergunta = input('Digite sua pergunta (ou digite "Sair" para encerrar): ')
-    
-    # verifica se o usuário deseja sair
-    if pergunta.strip().lower() == "sair":
-        print("Encerrando o programa...")
-        break
-    
-    # executa a função handle_query
-    response = handle_query(pergunta)
-    print(response)
+if __name__ == "__main__":
+    # loop para fazer perguntas
+    while True:
+        # lê a pergunta do terminal
+        pergunta = input('Digite sua pergunta (ou digite "Sair" para encerrar): ')
+        
+        # verifica se o usuário deseja sair
+        if pergunta.strip().lower() == "sair":
+            print("Encerrando o programa...")
+            break
+        
+        # executa a função handle_query
+        response = handle_query(pergunta)
+        print(response)
